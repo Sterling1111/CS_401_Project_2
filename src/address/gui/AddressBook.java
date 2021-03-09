@@ -55,7 +55,6 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     public AddressBook() throws SQLException {
         setTitle("Address Book");
         setContentPane(panel1);
-        setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.pack();
         listModel = new ListModel();
@@ -65,6 +64,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
         loadOracleJDBCDriver();
         getCredentials();
         initAddressBook();
+        setVisible(true);
     }
 
     public void initAddressBook() {
@@ -86,7 +86,8 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 Address address = new Address(street, city, state, zip);
                 AddressEntry ae = new AddressEntry(name, address, email, phone, ID);
                 this.add(ae);
-                listModel.add(ae);
+                //listModel.add(new AddressEntry(ae.getName(), ae.getAddress(), ae.getEmail(), ae.getPhone(), ae.getID()));
+                listModel.add(new AddressEntry(ae));
             }
             rset.close();
             stmt.close();
@@ -252,7 +253,6 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     public void setElementAt(AddressEntry entry, int index) {
         AddressEntry ae = getElementAt(index);
         if(entry.getName().getLastName().compareTo(ae.getName().getLastName()) != 0) {
-            System.out.println("They are not equal");
             removeElement(ae);
             ae.setName(entry.getName());
             ae.setAddress(entry.getAddress());
@@ -311,7 +311,6 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 wasLastElement = true;
             }
             String lastName = ae.getName().getLastName();
-            System.out.println(lastName);
             if(addressEntryList.computeIfPresent(lastName, (k, v) -> {
                 v.remove(ae);
                 if(v.isEmpty())
@@ -409,7 +408,6 @@ public class AddressBook extends JFrame implements ListSelectionListener {
             }
         });
     }
-
 }
 
 

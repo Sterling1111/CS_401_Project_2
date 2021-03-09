@@ -52,14 +52,13 @@ public class ListModel extends AbstractListModel<AddressEntry> {
     }
 
     public void add(AddressEntry entry) {
-        if(addressEntryList.computeIfAbsent(entry.getName().getLastName(), k -> new TreeSet<>()).add(entry))
+        if(addressEntryList.computeIfAbsent(entry.getName().getLastName(), k -> new TreeSet<>()).add(entry));
             fireContentsChanged(this, 0, getSize());
     }
 
     public void setElementAt(AddressEntry entry, int index) {
         AddressEntry ae = getElementAt(index);
         if(entry.getName().getLastName().compareTo(ae.getName().getLastName()) != 0) {
-            System.out.println("They are not equal");
             removeElement(ae);
             ae.setName(entry.getName());
             ae.setAddress(entry.getAddress());
@@ -121,7 +120,6 @@ public class ListModel extends AbstractListModel<AddressEntry> {
             fireContentsChanged(this, 0, getSize());
             return true;
         }
-        System.out.println("The set is empty so lets remove it");
         addressEntryList.remove(lastName);
         fireContentsChanged(this, 0, getSize());
         return true;
