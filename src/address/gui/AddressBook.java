@@ -1,8 +1,7 @@
 package address.gui;
 
+import address.DatabaseManager;
 import address.data.AddressEntry;
-import address.data.Name;
-import address.data.Address;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -45,6 +44,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     private ListModel listModel;
 
     private final TreeMap<String, TreeSet<AddressEntry>> addressEntryList = new TreeMap<>();
+    private final DatabaseManager databaseManager = new DatabaseManager();
     private String userName = "";
     private String password = "";
     private Connection conn = null;
@@ -68,41 +68,10 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     }
 
     public void initAddressBook() {
-        try {
-            conn = DriverManager.getConnection("jdbc:oracle:thin:" + userName + "/" + password + "@adcsdb01.csueastbay.edu:1521/mcspdb.ad.csueastbay.edu");
-            stmt = conn.createStatement();
-            rset = stmt.executeQuery("SELECT * FROM ADDRESSENTRYTABLE");
-            while(rset.next()) {
-                int ID = rset.getInt("ID");
-                String firstName = rset.getString("FIRSTNAME");
-                String lastName = rset.getString("LASTNAME");
-                String street = rset.getString("STREET");
-                String city = rset.getString("CITY");
-                String state = rset.getString("STATE");
-                int zip = rset.getInt("ZIP");
-                String email = rset.getString("EMAIL");
-                String phone = rset.getString("PHONE");
-                Name name = new Name(firstName, lastName);
-                Address address = new Address(street, city, state, zip);
-                AddressEntry ae = new AddressEntry(name, address, email, phone, ID);
-                this.add(ae);
-                //listModel.add(new AddressEntry(ae.getName(), ae.getAddress(), ae.getEmail(), ae.getPhone(), ae.getID()));
-                listModel.add(new AddressEntry(ae));
-            }
-            rset.close();
-            stmt.close();
-            conn.close();
-        } catch(SQLException e) {
-            e.printStackTrace();
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-            try{
-                if(conn != null)
-                    conn.close();
-            } catch(SQLException e) {
-                e.printStackTrace();
-            }
+        ArrayList<AddressEntry> entries = databaseManager.getAllEntries();
+        for(AddressEntry entry : entries) {
+            this.add(entry);
+            listModel.add(new AddressEntry(entry));
         }
         addressEntryJList.setSelectedIndex(0);
     }
@@ -247,6 +216,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
             return true;
         }
         addressEntryList.remove(lastName);
+        databaseManager.deleteAddressEntry(entry);
         return true;
     }
 
@@ -266,6 +236,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
             ae.setEmail(entry.getEmail());
             ae.setPhone(entry.getPhone());
         }
+        databaseManager.updateAddressEntry(ae);
     }
 
     public int getIndexOf(AddressEntry ae) {
@@ -327,6 +298,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 else
                     addressEntryJList.setSelectedIndex(index);
             }
+            databaseManager.deleteAddressEntry(ae);
         });
     }
 
@@ -399,6 +371,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 listModel.add(new AddressEntry(ae.getName(), ae.getAddress(), ae.getEmail(), ae.getPhone(), ae.getID()));
                 setTextFieldsImmutable();
                 addressEntryJList.setSelectedIndex(listModel.getIndexOf(ae));
+                databaseManager.addAddressEntry(ae);
             }
             else {
                 clearEntryTF();
