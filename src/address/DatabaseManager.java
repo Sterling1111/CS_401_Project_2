@@ -85,7 +85,7 @@ public class DatabaseManager {
             pstmt = conn.prepareStatement(
                     "INSERT INTO ADDRESSENTRYTABLE " +
                             "(FIRSTNAME, LASTNAME, STREET, CITY, STATE, ZIP, EMAIL, PHONE) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", new String[]{"ID"});
             pstmt.setString(1, entry.getName().getFirstName());
             pstmt.setString(2, entry.getName().getLastName());
             pstmt.setString(3, entry.getAddress().getStreet());
@@ -103,7 +103,12 @@ public class DatabaseManager {
             rset = pstmt.getGeneratedKeys();
 
             if(rset.next()) {
-                entry.setID(rset.getInt(1));
+                int id = rset.getInt(1);
+                System.out.println(id);
+                entry.setID(id);
+            }
+            else {
+                System.out.println("Sorry no can do");
             }
             rset.close();
             pstmt.close();

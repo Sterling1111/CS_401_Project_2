@@ -45,12 +45,6 @@ public class AddressBook extends JFrame implements ListSelectionListener {
 
     private final TreeMap<String, TreeSet<AddressEntry>> addressEntryList = new TreeMap<>();
     private final DatabaseManager databaseManager = new DatabaseManager();
-    private String userName = "";
-    private String password = "";
-    private Connection conn = null;
-    private Statement stmt = null;
-    private PreparedStatement pstmt = null;
-    private ResultSet rset = null;
 
     public AddressBook() throws SQLException {
         setTitle("Address Book");
@@ -61,8 +55,6 @@ public class AddressBook extends JFrame implements ListSelectionListener {
         addressEntryJList.setModel(listModel);
         setEventHandlers();
         setTextFieldsImmutable();
-        loadOracleJDBCDriver();
-        getCredentials();
         initAddressBook();
         setVisible(true);
     }
@@ -74,27 +66,6 @@ public class AddressBook extends JFrame implements ListSelectionListener {
             listModel.add(new AddressEntry(entry));
         }
         addressEntryJList.setSelectedIndex(0);
-    }
-
-    public void getCredentials() {
-        try {
-            File file = new File("credentials.txt");
-            Scanner inputFile = new Scanner(file);
-            userName = inputFile.nextLine();
-            password = inputFile.nextLine();
-        } catch(FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void loadOracleJDBCDriver() {
-        try {
-            Class.forName("oracle.jdbc.OracleDriver");
-        }
-        catch(ClassNotFoundException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
     }
 
     public void refreshList(TreeMap<String, TreeSet<AddressEntry>> addressEntryList) {
@@ -205,7 +176,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
         return null;
     }
 
-    public boolean removeElement(AddressEntry entry) {
+    public void removeElement(AddressEntry entry) {
         String lastName = entry.getName().getLastName();
         if(addressEntryList.computeIfPresent(lastName, (k, v) -> {
             v.remove(entry);
@@ -213,11 +184,10 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 return null;
             else return v;
         }) != null) {
-            return true;
+            return;
         }
         addressEntryList.remove(lastName);
-        databaseManager.deleteAddressEntry(entry);
-        return true;
+        //databaseManager.deleteAddressEntry(entry);
     }
 
     public void setElementAt(AddressEntry entry, int index) {
@@ -367,11 +337,12 @@ public class AddressBook extends JFrame implements ListSelectionListener {
         addB.addActionListener(e -> {
             if(firstNameTF.isEditable()) {
                 AddressEntry ae = constructEntryFromFields();
+                databaseManager.addAddressEntry(ae);
+                System.out.println(ae.getID());
                 add(ae);
                 listModel.add(new AddressEntry(ae.getName(), ae.getAddress(), ae.getEmail(), ae.getPhone(), ae.getID()));
                 setTextFieldsImmutable();
                 addressEntryJList.setSelectedIndex(listModel.getIndexOf(ae));
-                databaseManager.addAddressEntry(ae);
             }
             else {
                 clearEntryTF();
