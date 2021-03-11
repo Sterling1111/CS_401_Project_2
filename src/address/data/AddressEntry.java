@@ -25,6 +25,10 @@ public class AddressEntry implements Comparable<AddressEntry>{
         this.ID = ID;
     }
 
+    public AddressEntry(AddressEntry ae) {
+        this(ae.getName(), ae.getAddress(), ae.getEmail(), ae.getPhone(), ae.getID());
+    }
+
     public Name getName() { return name; }
 
     public Address getAddress() { return address; }
@@ -59,7 +63,7 @@ public class AddressEntry implements Comparable<AddressEntry>{
 
     @Override
     public String toString() {
-        return name.getFirstName() + ", " + name.getLastName() + "\n";
+        return name.getFirstName() + ", " + name.getLastName();
     }
 
     @Override
@@ -77,5 +81,14 @@ public class AddressEntry implements Comparable<AddressEntry>{
         }
         else
             return 1;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this)
+            return true;
+        if(!(obj instanceof AddressEntry))
+            return false;
+        return this.compareTo((AddressEntry)obj) == 0;
     }
 }
