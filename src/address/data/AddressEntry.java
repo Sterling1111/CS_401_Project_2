@@ -63,7 +63,7 @@ public class AddressEntry implements Comparable<AddressEntry>{
 
     @Override
     public String toString() {
-        return name.getFirstName() + ", " + name.getLastName();
+        return name.getLastName() + ", " + name.getFirstName();
     }
 
     @Override
