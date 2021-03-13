@@ -61,9 +61,10 @@ public class AddressEntry implements Comparable<AddressEntry>{
 
     public void setID(Integer ID) { this.ID = ID; }
 
+    //prints last name before first name
     @Override
     public String toString() {
-        return name.getFirstName() + ", " + name.getLastName();
+        return name.getLastName() + ", " + name.getFirstName();
     }
 
     @Override

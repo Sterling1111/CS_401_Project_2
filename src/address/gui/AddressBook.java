@@ -77,7 +77,8 @@ public class AddressBook extends JFrame implements ListSelectionListener {
         for(Map.Entry<String, TreeSet<AddressEntry>> entry : addressEntryList.entrySet()) {
             for(AddressEntry item : entry.getValue()) {
                 if(item != null) {
-                    listModel.add(new AddressEntry(item.getName(), item.getAddress(), item.getEmail(), item.getPhone(), item.getID()));
+                    //listModel.add(new AddressEntry(item.getName(), item.getAddress(), item.getEmail(), item.getPhone(), item.getID()));
+                    listModel.add(new AddressEntry(item));
                 }
             }
         }
@@ -281,7 +282,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                     setTextFieldsImmutable();
                 }
             }
-            public void focusLost(FocusEvent e) {};
+            public void focusLost(FocusEvent e) {}
         });
 
         findTF.addKeyListener(new KeyAdapter() {
