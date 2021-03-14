@@ -354,10 +354,18 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 addressEntryJList.setSelectedIndex(listModel.getIndexOf(entry));
                 setTextFieldsImmutable();
                 updateB.setText("Edit");
+                listB.setEnabled(true);
+                findB.setEnabled(true);
+                deleteB.setEnabled(true);
+                updateB.setEnabled(true);
             }
             else if(!addressEntryJList.isSelectionEmpty()) {
                 setTextFieldsMutable();
                 updateB.setText("Done");
+                listB.setEnabled(false);
+                findB.setEnabled(false);
+                deleteB.setEnabled(false);
+                updateB.setEnabled(false);
             }
             else {
                 setTextFieldsImmutable();
@@ -369,7 +377,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
         addB.addActionListener(e -> {
             if(firstNameTF.isEditable()) {
                 if (!checkForBlankTF()) {
-                    JOptionPane.showMessageDialog(null, "Incomplete Entry!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(panel1, "Incomplete Entry!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 AddressEntry ae = constructEntryFromFields();
@@ -379,6 +387,10 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 listModel.add(new AddressEntry(ae.getName(), ae.getAddress(), ae.getEmail(), ae.getPhone(), ae.getID()));
                 setTextFieldsImmutable();
                 addB.setText("Add");
+                listB.setEnabled(true);
+                findB.setEnabled(true);
+                deleteB.setEnabled(true);
+                updateB.setEnabled(true);
                 addressEntryJList.setSelectedIndex(listModel.getIndexOf(ae));
             }
             else {
@@ -386,6 +398,10 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 addressEntryJList.clearSelection();
                 setTextFieldsMutable();
                 addB.setText("Done");
+                listB.setEnabled(false);
+                findB.setEnabled(false);
+                deleteB.setEnabled(false);
+                updateB.setEnabled(false);
                 firstNameTF.requestFocus();
             }
         });
