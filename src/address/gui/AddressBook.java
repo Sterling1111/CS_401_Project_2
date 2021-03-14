@@ -36,17 +36,15 @@ public class AddressBook extends JFrame implements ListSelectionListener {
      */
     private JTextField findTF;
     /**
-     *  a button which when clicked on displays all entries to {@link AddressBook#addressEntryJList}
+     *  a button which when clicked on triggers the ActionEvent contained in function {@link AddressBook#setListBEventHandlers()}
      */
     private JButton listB;
     /**
-     * a button which when clicked on pulls string data from {@link AddressBook#findTF} and searches the entries of
-     * {@link AddressBook#addressEntryList} for entries whose lastName fields contain a common prefix screen. The
-     * entries are then displayed to {@link AddressBook#addressEntryJList}
+     * a button which when clicked triggers the ActionEvent contained in function {@link AddressBook#setListBEventHandlers()}
      */
     private JButton findB;
     /**
-     * a list which displays various address entries to the screen depending on user input
+     * displays address entries to the screen
      */
     private JList<AddressEntry> addressEntryJList;
     /**
@@ -89,24 +87,71 @@ public class AddressBook extends JFrame implements ListSelectionListener {
      * string data to add or modify address entries.
      */
     private JTextField phoneTF;
+    /**
+     * a label which reads "Find entries by last name:" is denotes the purpose of {@link AddressBook#findTF}
+     */
     private JLabel findL;
+    /**
+     * a label which reads "First Name:" it labels the data displayed in {@link AddressBook#firstNameTF}
+     */
     private JLabel firstNameL;
+    /**
+     * a label which reads "Last Name:" it labels the data displayed in {@link AddressBook#lastNameTF}
+     */
     private JLabel lastNameL;
+    /**
+     * a label which reads "Street:" it labels the data displayed in {@link AddressBook#streetTF}
+     */
     private JLabel streetL;
+    /**
+     * a label which reads "City:" it labels the data displayed in {@link AddressBook#cityTF}
+     */
     private JLabel cityL;
+    /**
+     * a label which reads "State:" it labels the data displayed in {@link AddressBook#stateTF}
+     */
     private JLabel stateL;
+    /**
+     * a label which reads "Zip Code:" it labels the data displayed in {@link AddressBook#zipTF}
+     */
     private JLabel zipL;
+    /**
+     * a label which reads "Email:" it labels the data displayed in {@link AddressBook#emailTF}
+     */
     private JLabel emailL;
+    /**
+     * a label which reads "Phone:" it labels the data displayed in {@link AddressBook#phoneTF}
+     */
     private JLabel phoneL;
+    /**
+     * a button which when pressed triggers event described in {@link AddressBook#setAddBEventHandlers()}
+     */
     private JButton addB;
+    /**
+     * a button which when clicked on triggers event described in {@link AddressBook#setDeleteBEventHandlers()}
+     */
     private JButton deleteB;
+    /**
+     * a button which when clicked on triggers event described in {@link AddressBook#setUpdateBEventHandlers()}
+     * */
     private JButton updateB;
+    /**
+     * linked to {@link AddressBook#addressEntryJList} it contains the data that the JList displays
+     */
     private ListModel listModel;
-
+    /**
+     * stores all of the entries so that they can be quickly retrieved from memory
+     */
     private final TreeMap<String, TreeSet<AddressEntry>> addressEntryList = new TreeMap<>();
+    /**
+     * allows for adding, removing, updating, and retrieving address entries from database
+     */
     private final DatabaseManager databaseManager = new DatabaseManager();
 
-    public AddressBook() throws SQLException {
+    /**
+     *
+     */
+    public AddressBook()  {
         setTitle("Address Book");
         setContentPane(panel1);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
