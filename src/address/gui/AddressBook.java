@@ -14,20 +14,80 @@ import java.util.*;
 import java.sql.*;
 import java.io.*;
 
+/**
+ * provides the necessary functions and data to display a basic address book on screen
+ * In addition to displaying the components it contains functions and data necessary to
+ * store, update, add, delete, and modify the member of the address book in computer
+ * memory and also in a database.
+ * @author Sterling Jeppson
+ * @author Arian Aryubi
+ * @author Lissette Sotto
+ * @author Karthikeyan Vijayaraj
+ * @since 3/14/21
+ * */
 public class AddressBook extends JFrame implements ListSelectionListener {
 
+    /**
+     * contains all other panels necessary to implement the layout
+     */
     private JPanel panel1;
+    /**
+     * allows for typing in of text data which represents a last name substring to be searched for
+     */
     private JTextField findTF;
+    /**
+     *  a button which when clicked on displays all entries to {@link AddressBook#addressEntryJList}
+     */
     private JButton listB;
+    /**
+     * a button which when clicked on pulls string data from {@link AddressBook#findTF} and searches the entries of
+     * {@link AddressBook#addressEntryList} for entries whose lastName fields contain a common prefix screen. The
+     * entries are then displayed to {@link AddressBook#addressEntryJList}
+     */
     private JButton findB;
+    /**
+     * a list which displays various address entries to the screen depending on user input
+     */
     private JList<AddressEntry> addressEntryJList;
+    /**
+     * a text field which displays firstName of the currently selected address entry. Can also be used to enter in
+     * string data to add or modify address entries.
+     */
     private JTextField firstNameTF;
+    /**
+     * a text field which displays lastName of the currently selected address entry. Can also be used to enter in
+     * string data to add or modify address entries.
+     */
     private JTextField lastNameTF;
+    /**
+     * a text field which displays street of the currently selected address entry. Can also be used to enter in
+     * string data to add or modify address entries.
+     */
     private JTextField streetTF;
+    /**
+     * a text field which displays city of the currently selected address entry. Can also be used to enter in
+     * string data to add or modify address entries.
+     */
     private JTextField cityTF;
+    /**
+     * a text field which displays state of the currently selected address entry. Can also be used to enter in
+     * string data to add or modify address entries.
+     */
     private JTextField stateTF;
+    /**
+     * a text field which displays zip of the currently selected address entry. Can also be used to enter in
+     * string data to add or modify address entries.
+     */
     private JTextField zipTF;
+    /**
+     * a text field which displays email address of the currently selected address entry. Can also be used to enter in
+     * string data to add or modify address entries.
+     */
     private JTextField emailTF;
+    /**
+     * a text field which displays phone number of the currently selected address entry. Can also be used to enter in
+     * string data to add or modify address entries.
+     */
     private JTextField phoneTF;
     private JLabel findL;
     private JLabel firstNameL;
