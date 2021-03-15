@@ -249,7 +249,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     /**
      * Returns a set of all those address entries where some prefix of the last names of all the entries matches the parameter passed
      * @param startOf_lastName is a String which specifies the prefix of the last name of all entries to be returned in the Set.
-     * @return a {@link TreeSet<AddressEntry>} where every {@link AddressEntry} in the set have last names with prefixes that exaclty
+     * @return a {@link TreeSet<AddressEntry>} where every {@link AddressEntry} in the set have last names with prefixes that exactly
      * math the parameter passed.
      */
     private TreeSet<AddressEntry> getPrefixSet(String startOf_lastName) {
@@ -317,22 +317,28 @@ public class AddressBook extends JFrame implements ListSelectionListener {
         setTextFieldsMutability(true);
     }
 
+    /**
+     * Returns a Boolean depending on if any text fields are left blank
+     * @return true if any field is blank and false if all fields are filled out
+     */
     private Boolean checkForBlankTF() {
         if (firstNameTF.getText().isBlank()) {
-            return false;
+            return true;
         } else if (lastNameTF.getText().isBlank()) {
-            return false;
+            return true;
         } else if (streetTF.getText().isBlank()) {
-            return false;
+            return true;
         } else if (cityTF.getText().isBlank()) {
-            return false;
+            return true;
         } else if (stateTF.getText().isBlank()) {
-            return false;
+            return true;
         } else if (zipTF.getText().isBlank()) {
-            return false;
+            return true;
         } else if (emailTF.getText().isBlank()) {
-            return false;
-        } else return !phoneTF.getText().isBlank();
+            return true;
+        } else if(phoneTF.getText().isBlank()) {
+            return true;
+        } else return false;
     }
     /**
      * Pulls the data from {@link AddressBook#firstNameTF}, {@link AddressBook#lastNameTF}, {@link AddressBook#cityTF},
@@ -386,7 +392,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
      * by {@link AddressBook#setElementAt(AddressEntry, int)}. This is because the method is meant to be used for remapping
      * addressEntryList in the case that the lastName of an AddressEntry is modified. If this occurs then because the lastName
      * is the key for the map, the AddressEntry would be lost. However, since we know that the addressEntry will be immediately
-     * re-inserted into the map it dosent make sense to have the database do all this extra work to remove it only to add it back in.
+     * re-inserted into the map it doesn't make sense to have the database do all this extra work to remove it only to add it back in.
      * Therefore if the function was used to permanently remove an AddressEntry from the addressEntryList, there would be an
      * inconsistency between the data in the database and the data in the addressEntryList.
      * @param entry an entry whose fields(with the exception of ID) all must match the entry to be removed.
@@ -486,6 +492,31 @@ public class AddressBook extends JFrame implements ListSelectionListener {
      */
     public void setDeleteBEventHandlers() {
         deleteB.addActionListener(e -> {
+            if (deleteB.getText() == "Cancel") {
+                if (!addressEntryJList.isSelectionEmpty()) {
+                    AddressEntry ae = listModel.getElementAt(addressEntryJList.getSelectedIndex());
+                    firstNameTF.setText(ae.getName().getFirstName());
+                    lastNameTF.setText(ae.getName().getLastName());
+                    cityTF.setText(ae.getAddress().getCity());
+                    stateTF.setText(ae.getAddress().getState());
+                    streetTF.setText(ae.getAddress().getStreet());
+                    zipTF.setText(String.valueOf(ae.getAddress().getZip()));
+                    phoneTF.setText(ae.getPhone());
+                    emailTF.setText(ae.getEmail());
+                } else {
+                    clearEntryTF();
+                }
+                setTextFieldsImmutable();
+                addB.setText("Add");
+                updateB.setText("Edit");
+                deleteB.setText("Delete");
+                listB.setEnabled(true);
+                findB.setEnabled(true);
+                addB.setEnabled(true);
+                updateB.setEnabled(true);
+                addressEntryJList.setEnabled(true);
+                return;
+            }
             setTextFieldsImmutable();
             clearEntryTF();
             AddressEntry ae = addressEntryJList.getSelectedValue();
@@ -573,7 +604,8 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     public void setUpdateBEventHandlers() {
         updateB.addActionListener(e -> {
             if(!addressEntryJList.isSelectionEmpty() && firstNameTF.isEditable()) {
-                if (!checkForBlankTF()) {
+                //resets text fields to saved entry if any fields are left blank when done editing
+                if (checkForBlankTF()) {
                     AddressEntry ae = listModel.getElementAt(addressEntryJList.getSelectedIndex());
                     firstNameTF.setText(ae.getName().getFirstName());
                     lastNameTF.setText(ae.getName().getLastName());
@@ -593,18 +625,20 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 addressEntryJList.setSelectedIndex(listModel.getIndexOf(entry));
                 setTextFieldsImmutable();
                 updateB.setText("Edit");
+                deleteB.setText("Delete");
                 listB.setEnabled(true);
                 findB.setEnabled(true);
-                deleteB.setEnabled(true);
-                updateB.setEnabled(true);
+                addB.setEnabled(true);
+                addressEntryJList.setEnabled(true);
             }
             else if(!addressEntryJList.isSelectionEmpty()) {
                 setTextFieldsMutable();
                 updateB.setText("Done");
+                deleteB.setText("Cancel");
                 listB.setEnabled(false);
                 findB.setEnabled(false);
-                deleteB.setEnabled(false);
-                updateB.setEnabled(false);
+                addB.setEnabled(false);
+                addressEntryJList.setEnabled(false);
             }
             else {
                 setTextFieldsImmutable();
@@ -618,7 +652,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     public void setAddBEventHandlers() {
         addB.addActionListener(e -> {
             if(firstNameTF.isEditable()) {
-                if (!checkForBlankTF()) {
+                if (checkForBlankTF()) {
                     JOptionPane.showMessageDialog(panel1, "Incomplete Entry!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -629,10 +663,11 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 listModel.add(new AddressEntry(ae.getName(), ae.getAddress(), ae.getEmail(), ae.getPhone(), ae.getID()));
                 setTextFieldsImmutable();
                 addB.setText("Add");
+                deleteB.setText("Delete");
                 listB.setEnabled(true);
                 findB.setEnabled(true);
-                deleteB.setEnabled(true);
                 updateB.setEnabled(true);
+                addressEntryJList.setEnabled(true);
                 addressEntryJList.setSelectedIndex(listModel.getIndexOf(ae));
             }
             else {
@@ -640,10 +675,11 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 addressEntryJList.clearSelection();
                 setTextFieldsMutable();
                 addB.setText("Done");
+                deleteB.setText("Cancel");
                 listB.setEnabled(false);
                 findB.setEnabled(false);
-                deleteB.setEnabled(false);
                 updateB.setEnabled(false);
+                addressEntryJList.setEnabled(false);
                 firstNameTF.requestFocus();
             }
         });
