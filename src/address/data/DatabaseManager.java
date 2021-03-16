@@ -1,4 +1,4 @@
-package address;
+package address.data;
 
 import address.data.Address;
 import address.data.AddressEntry;
@@ -10,14 +10,45 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Provides capability to load, add, update, and delete entries from a database.
+ * @author Sterling Jeppson
+ * @author Arian Aryubi
+ * @author Lissette Sotto
+ * @author Karthikeyan Vijayaraj
+ * @since 3/14/21
+ * */
 public class DatabaseManager {
+    /**
+     * Stores the userName which is required to establish a connection to the server.
+     */
     private String userName = "";
+    /**
+     * Stores the password which is required to establish a connection to the server.
+     */
     private String password = "";
+    /**
+     * Holds the address of Various connection sessions as needed.
+     */
     private Connection conn = null;
+    /**
+     * Holds the address of various statements needed to query the database.
+     */
     private Statement stmt = null;
+    /**
+     * Holds the address of various prepared statements needed to query the database.
+     */
     private PreparedStatement pstmt = null;
+    /**
+     * Holds the address of various result sets from various database queries.
+     */
     private ResultSet rset = null;
 
+    /**
+     * Constructs a database manager object and loads the oracle Driver class
+     * It also reads sets {@link DatabaseManager#userName} and {@link DatabaseManager#password}
+     * with a call to {@link DatabaseManager#getCredentials()}
+     */
     public DatabaseManager() {
         try {
             Class.forName("oracle.jdbc.OracleDriver");
@@ -28,6 +59,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Loads two strings from file "credentials.txt" which is located in Project folder.
+     * The two items read from the file will be strings and they will initialize data-member
+     * {@link DatabaseManager#userName} and {@link DatabaseManager#password}.
+     */
     public void getCredentials() {
         try {
             File file = new File("credentials.txt");
@@ -39,6 +75,12 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Establishes a connection to the database and retrieves all of the data fields. These data
+     * fields will be used to create a series of {@link AddressEntry} instances. These will be loaded into
+     * an ArrayList of AddressEntry. Then the ArrayList will be returned.
+     * @return {@link ArrayList<AddressEntry>} which represent all of the data that is in the database.
+     */
     public ArrayList<AddressEntry> getAllEntries() {
         try {
             ArrayList<AddressEntry> entries = new ArrayList<>();
@@ -79,6 +121,13 @@ public class DatabaseManager {
         return new ArrayList<>();
     }
 
+    /**
+     * Establishes a connection to the database and adds the data which is contained in the parameter to the database.
+     * When the entry is added the database provides an auto-generated ID and returns this ID. Then method {@link AddressEntry#setID(Integer)}
+     * with the ID that was returned from the database. This is done because now we will be able to find the ID in the database from the ID field
+     * in the AddressEntry and we also do not have to worry about primary key clashes from adding our own ID's.
+     * @param entry an AddressEntry where the fields are to be added to the database.
+     */
     public void addAddressEntry(AddressEntry entry) {
         try {
             conn = DriverManager.getConnection("jdbc:oracle:thin:" + userName + "/" + password + "@adcsdb01.csueastbay.edu:1521/mcspdb.ad.csueastbay.edu");
@@ -130,6 +179,10 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Removes the address entry provided from the database.
+     * @param entry the entry to be deleted from the database.
+     */
     public void deleteAddressEntry(AddressEntry entry) {
         try {
             conn = DriverManager.getConnection("jdbc:oracle:thin:" + userName + "/" + password + "@adcsdb01.csueastbay.edu:1521/mcspdb.ad.csueastbay.edu");
@@ -154,6 +207,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Updates the entry in the database to which has the same ID as the entry provided in the parameter to contain
+     * all the same data fields as in the parameter.
+     * @param entry an AddressEntry that contains an identifying ID and fields that we wish to change the fields in the database where the ID matches to match.
+     */
     public void updateAddressEntry(AddressEntry entry) {
         try {
             conn = DriverManager.getConnection("jdbc:oracle:thin:" + userName + "/" + password + "@adcsdb01.csueastbay.edu:1521/mcspdb.ad.csueastbay.edu");
