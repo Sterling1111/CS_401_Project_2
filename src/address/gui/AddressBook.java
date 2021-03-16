@@ -264,6 +264,21 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     }
 
     /**
+     * Populates text fields with specified entry details
+     * @param ae is the {@link AddressEntry} who's fields will be displayed in the text fields
+     */
+    private void populateTextFields(AddressEntry ae) {
+        firstNameTF.setText(ae.getName().getFirstName());
+        lastNameTF.setText(ae.getName().getLastName());
+        cityTF.setText(ae.getAddress().getCity());
+        stateTF.setText(ae.getAddress().getState());
+        streetTF.setText(ae.getAddress().getStreet());
+        zipTF.setText(String.valueOf(ae.getAddress().getZip()));
+        phoneTF.setText(ae.getPhone());
+        emailTF.setText(ae.getEmail());
+    }
+
+    /**
      * Established the behavior for {@link AddressBook#addressEntryJList} in the event that a new selection is made in the list.
      * The behavior is that whichever element in the JList is currently selected will have all of its fields except for ID displayed
      * to the JTextFields. This method is the implementation of of method in interface ListSelectionListener which {@link AddressBook} implements.
@@ -273,14 +288,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
         setTextFieldsImmutable();
         AddressEntry ae = listModel.getElementAt(addressEntryJList.getSelectedIndex());
         if(ae != null) {
-            firstNameTF.setText(ae.getName().getFirstName());
-            lastNameTF.setText(ae.getName().getLastName());
-            cityTF.setText(ae.getAddress().getCity());
-            stateTF.setText(ae.getAddress().getState());
-            streetTF.setText(ae.getAddress().getStreet());
-            zipTF.setText(String.valueOf(ae.getAddress().getZip()));
-            phoneTF.setText(ae.getPhone());
-            emailTF.setText(ae.getEmail());
+            populateTextFields(ae);
         }
     }
 
@@ -481,6 +489,20 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     }
 
     /**
+     * Resets UI and allows user to interact with buttons
+     */
+    private void viewMode() {
+        addB.setText("Add");
+        updateB.setText("Edit");
+        deleteB.setText("Delete");
+        listB.setEnabled(true);
+        findB.setEnabled(true);
+        addB.setEnabled(true);
+        updateB.setEnabled(true);
+        addressEntryJList.setEnabled(true);
+    }
+
+    /**
      * registers and defines an ActionListener for {@link AddressBook#deleteB}. When an event is triggered
      * for this button the textFields are made immutable with a call to {@link AddressBook#setTextFieldsImmutable()}.
      * Then the textFields are cleared with a call to {@link AddressBook#clearEntryTF()}. Next the {@link AddressEntry}
@@ -492,29 +514,15 @@ public class AddressBook extends JFrame implements ListSelectionListener {
      */
     public void setDeleteBEventHandlers() {
         deleteB.addActionListener(e -> {
-            if (deleteB.getText() == "Cancel") {
+            if (deleteB.getText().equals("Cancel")) {
                 if (!addressEntryJList.isSelectionEmpty()) {
                     AddressEntry ae = listModel.getElementAt(addressEntryJList.getSelectedIndex());
-                    firstNameTF.setText(ae.getName().getFirstName());
-                    lastNameTF.setText(ae.getName().getLastName());
-                    cityTF.setText(ae.getAddress().getCity());
-                    stateTF.setText(ae.getAddress().getState());
-                    streetTF.setText(ae.getAddress().getStreet());
-                    zipTF.setText(String.valueOf(ae.getAddress().getZip()));
-                    phoneTF.setText(ae.getPhone());
-                    emailTF.setText(ae.getEmail());
+                    populateTextFields(ae);
                 } else {
                     clearEntryTF();
                 }
                 setTextFieldsImmutable();
-                addB.setText("Add");
-                updateB.setText("Edit");
-                deleteB.setText("Delete");
-                listB.setEnabled(true);
-                findB.setEnabled(true);
-                addB.setEnabled(true);
-                updateB.setEnabled(true);
-                addressEntryJList.setEnabled(true);
+                viewMode();
                 return;
             }
             setTextFieldsImmutable();
@@ -607,14 +615,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 //resets text fields to saved entry if any fields are left blank when done editing
                 if (checkForBlankTF()) {
                     AddressEntry ae = listModel.getElementAt(addressEntryJList.getSelectedIndex());
-                    firstNameTF.setText(ae.getName().getFirstName());
-                    lastNameTF.setText(ae.getName().getLastName());
-                    cityTF.setText(ae.getAddress().getCity());
-                    stateTF.setText(ae.getAddress().getState());
-                    streetTF.setText(ae.getAddress().getStreet());
-                    zipTF.setText(String.valueOf(ae.getAddress().getZip()));
-                    phoneTF.setText(ae.getPhone());
-                    emailTF.setText(ae.getEmail());
+                    populateTextFields(ae);
                     return;
                 }
                 int index = addressEntryJList.getSelectedIndex();
@@ -624,12 +625,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 listModel.setElementAt(entry, index);
                 addressEntryJList.setSelectedIndex(listModel.getIndexOf(entry));
                 setTextFieldsImmutable();
-                updateB.setText("Edit");
-                deleteB.setText("Delete");
-                listB.setEnabled(true);
-                findB.setEnabled(true);
-                addB.setEnabled(true);
-                addressEntryJList.setEnabled(true);
+                viewMode();
             }
             else if(!addressEntryJList.isSelectionEmpty()) {
                 setTextFieldsMutable();
@@ -662,12 +658,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 add(ae);
                 listModel.add(new AddressEntry(ae.getName(), ae.getAddress(), ae.getEmail(), ae.getPhone(), ae.getID()));
                 setTextFieldsImmutable();
-                addB.setText("Add");
-                deleteB.setText("Delete");
-                listB.setEnabled(true);
-                findB.setEnabled(true);
-                updateB.setEnabled(true);
-                addressEntryJList.setEnabled(true);
+                viewMode();
                 addressEntryJList.setSelectedIndex(listModel.getIndexOf(ae));
             }
             else {
