@@ -8,6 +8,7 @@ import address.data.Name;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.DefaultEditorKit;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -172,6 +173,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
         setEventHandlers();
         setTextFieldsImmutable();
         initAddressBook();
+        setTextFieldDeleteButtonBehavior();
         setVisible(true);
     }
 
@@ -189,6 +191,22 @@ public class AddressBook extends JFrame implements ListSelectionListener {
             listModel.add(new AddressEntry(entry));
         }
         addressEntryJList.setSelectedIndex(0);
+    }
+
+    /**
+     * function which ensures that for all of the JTextFields, if the backspace is pressed but the textField is
+     * empty the beep will not sound.
+     */
+    public void setTextFieldDeleteButtonBehavior() {
+        findTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        firstNameTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        lastNameTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        streetTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        cityTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        stateTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        zipTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        phoneTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        emailTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
     }
 
     /**
