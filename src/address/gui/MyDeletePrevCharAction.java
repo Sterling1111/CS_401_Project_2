@@ -3,6 +3,14 @@ package address.gui;
 import javax.swing.text.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * eliminates the beep sound from delete button
+ * @author Sterling Jeppson
+ * @author Arian Aryubi
+ * @author Lissette Sotto
+ * @author Karthikeyan Vijayaraj
+ * @since 3/14/21
+ * */
 class MyDeletePrevCharAction extends TextAction {
 
     /**

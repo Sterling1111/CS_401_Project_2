@@ -12,10 +12,17 @@ import java.awt.EventQueue;
  * @since 3/14/21
  * */
 public class AddressBookApplication {
+    /**
+     * the main function of the program
+     * @param args command line arguments. They will not be used.
+     */
     public static void main(String[] args) {
 
         EventQueue.invokeLater(new Runnable() {
 
+            /**
+             * The starting point of the application
+             */
             public void run() {
                 try {
                     AddressBook ab = new AddressBook();
