@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import java.lang.Math;
 
 /**
- * Provides an AbstractListModel implementation which will automatically store AddressEnty object
+ * Provides an AbstractListModel implementation which will automatically store AddressEntry object
  * in sorted order by last name.
  * @author Sterling Jeppson
  * @author Arian Aryubi
@@ -20,7 +20,7 @@ import java.lang.Math;
 public class ListModel extends AbstractListModel<AddressEntry> {
 
     /**
-     * a data structure to contain the AddressEnty objects.
+     * a data structure to contain the AddressEntry objects.
      */
     private final TreeMap<String, TreeSet<AddressEntry>> addressEntryList;
 
@@ -32,8 +32,8 @@ public class ListModel extends AbstractListModel<AddressEntry> {
     }
 
     /**
-     * returns the total number of AddressEnty objects stored in the list.
-     * @return the total number of AddressEnty objects stored in the list.
+     * returns the total number of AddressEntry objects stored in the list.
+     * @return the total number of AddressEntry objects stored in the list.
      */
     public int getSize() {
         return addressEntryList.values().stream().mapToInt(TreeSet::size).sum();
@@ -60,7 +60,7 @@ public class ListModel extends AbstractListModel<AddressEntry> {
     }
 
     /**
-     * returns the index at which the AddressEntry specified by the paramter is found.
+     * returns the index at which the AddressEntry specified by the parameter is found.
      * @param ae the AddressEntry which we are searching for
      * @return the index at which the AddressEntry specified by the parameter is found or -1 if no such
      * AddressEntry is found.
@@ -92,7 +92,7 @@ public class ListModel extends AbstractListModel<AddressEntry> {
 
     /**
      * Updates the element found at the index specified to match the AddressEntry instance passed.
-     * @param entry The AddressEntry which the AddressEnty at index will be set to.
+     * @param entry The AddressEntry which the AddressEntry at index will be set to.
      * @param index The index at which we wish to update the AddressEntry.
      */
     public void setElementAt(AddressEntry entry, int index) {
