@@ -18,6 +18,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.sql.*;
+
 
 /**
  * provides the necessary functions and data to display a basic address book on screen
@@ -320,6 +322,23 @@ public class AddressBook extends JFrame implements ListSelectionListener {
         setTextFieldsMutability(true);
     }
 
+    private Boolean checkForBlankTF() {
+        if (firstNameTF.getText().isBlank()) {
+            return false;
+        } else if (lastNameTF.getText().isBlank()) {
+            return false;
+        } else if (streetTF.getText().isBlank()) {
+            return false;
+        } else if (cityTF.getText().isBlank()) {
+            return false;
+        } else if (stateTF.getText().isBlank()) {
+            return false;
+        } else if (zipTF.getText().isBlank()) {
+            return false;
+        } else if (emailTF.getText().isBlank()) {
+            return false;
+        } else return !phoneTF.getText().isBlank();
+    }
     /**
      * Pulls the data from {@link AddressBook#firstNameTF}, {@link AddressBook#lastNameTF}, {@link AddressBook#cityTF},
      * {@link AddressBook#stateTF}, {@link AddressBook#streetTF}, {@link AddressBook#zipTF},
@@ -571,6 +590,18 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     public void setUpdateBEventHandlers() {
         updateB.addActionListener(e -> {
             if(!addressEntryJList.isSelectionEmpty() && firstNameTF.isEditable()) {
+                if (!checkForBlankTF()) {
+                    AddressEntry ae = listModel.getElementAt(addressEntryJList.getSelectedIndex());
+                    firstNameTF.setText(ae.getName().getFirstName());
+                    lastNameTF.setText(ae.getName().getLastName());
+                    cityTF.setText(ae.getAddress().getCity());
+                    stateTF.setText(ae.getAddress().getState());
+                    streetTF.setText(ae.getAddress().getStreet());
+                    zipTF.setText(String.valueOf(ae.getAddress().getZip()));
+                    phoneTF.setText(ae.getPhone());
+                    emailTF.setText(ae.getEmail());
+                    return;
+                }
                 int index = addressEntryJList.getSelectedIndex();
                 AddressEntry currentlySelectedEntry = addressEntryJList.getSelectedValue();
                 AddressEntry entry = constructEntryFromFields();
@@ -578,9 +609,19 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 listModel.setElementAt(entry, index);
                 addressEntryJList.setSelectedIndex(listModel.getIndexOf(entry));
                 setTextFieldsImmutable();
+                updateB.setText("Edit");
+                listB.setEnabled(true);
+                findB.setEnabled(true);
+                deleteB.setEnabled(true);
+                updateB.setEnabled(true);
             }
             else if(!addressEntryJList.isSelectionEmpty()) {
                 setTextFieldsMutable();
+                updateB.setText("Done");
+                listB.setEnabled(false);
+                findB.setEnabled(false);
+                deleteB.setEnabled(false);
+                updateB.setEnabled(false);
             }
             else {
                 setTextFieldsImmutable();
@@ -594,18 +635,32 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     public void setAddBEventHandlers() {
         addB.addActionListener(e -> {
             if(firstNameTF.isEditable()) {
+                if (!checkForBlankTF()) {
+                    JOptionPane.showMessageDialog(panel1, "Incomplete Entry!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 AddressEntry ae = constructEntryFromFields();
                 databaseManager.addAddressEntry(ae);
                 System.out.println(ae.getID());
                 add(ae);
                 listModel.add(new AddressEntry(ae.getName(), ae.getAddress(), ae.getEmail(), ae.getPhone(), ae.getID()));
                 setTextFieldsImmutable();
+                addB.setText("Add");
+                listB.setEnabled(true);
+                findB.setEnabled(true);
+                deleteB.setEnabled(true);
+                updateB.setEnabled(true);
                 addressEntryJList.setSelectedIndex(listModel.getIndexOf(ae));
             }
             else {
                 clearEntryTF();
                 addressEntryJList.clearSelection();
                 setTextFieldsMutable();
+                addB.setText("Done");
+                listB.setEnabled(false);
+                findB.setEnabled(false);
+                deleteB.setEnabled(false);
+                updateB.setEnabled(false);
                 firstNameTF.requestFocus();
             }
         });

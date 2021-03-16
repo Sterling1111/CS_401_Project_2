@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="@Oracle-mcs1017" check-outdated="false" uuid="ab01a8cc-e022-4b5a-b6e1-eb20ff5c707b">
+    <data-source source="LOCAL" name="Oracle-mcs1030" uuid="0ee7ea7f-83ab-4610-89a1-2666b7ba804b">
       <driver-ref>oracle.19</driver-ref>
       <synchronize>true</synchronize>
       <auto-commit>false</auto-commit>
       <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
-      <jdbc-url>jdbc:oracle:thin:@//adcsdb01.csueastbay.edu:1521/mcspdb.ad.csueastbay.edu</jdbc-url>
+      <jdbc-url>jdbc:oracle:thin:@ adcsdb01.csueastbay.edu:1521:mcspdb.ad.csueastbay.edu</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
