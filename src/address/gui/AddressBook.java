@@ -4,15 +4,19 @@ import address.data.Address;
 import address.data.DatabaseManager;
 import address.data.AddressEntry;
 import address.data.Name;
+import address.gui.MyDeletePrevCharAction;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
@@ -170,6 +174,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
         listModel = new ListModel();
         addressEntryJList.setModel(listModel);
         setEventHandlers();
+        setTextFieldDeleteBehavior();
         setTextFieldsImmutable();
         initAddressBook();
         setVisible(true);
@@ -443,6 +448,18 @@ public class AddressBook extends JFrame implements ListSelectionListener {
         setListBEventHandlers();
         setUpdateBEventHandlers();
         setAddBEventHandlers();
+    }
+
+    public void setTextFieldDeleteBehavior() {
+        findTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        firstNameTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        lastNameTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        streetTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        cityTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        zipTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        stateTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        emailTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
+        phoneTF.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new MyDeletePrevCharAction());
     }
 
     /**

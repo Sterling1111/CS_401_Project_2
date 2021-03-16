@@ -9,7 +9,6 @@ class MyDeletePrevCharAction extends TextAction {
      * Creates this object with the appropriate identifier.
      */
     MyDeletePrevCharAction() {
-        //super(deletePrevCharAction);
         super(DefaultEditorKit.deletePrevCharAction);
     }
 
@@ -49,10 +48,6 @@ class MyDeletePrevCharAction extends TextAction {
                 }
             } catch (BadLocationException bl) {
             }
-        }
-        if (beep) {
-            //UIManager.getLookAndFeel().provideErrorFeedback(target);
-            System.out.println("beep");
         }
     }
 }
