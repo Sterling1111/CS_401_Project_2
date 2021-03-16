@@ -8,13 +8,11 @@ import address.data.Name;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.*;
-import java.sql.*;
 
 
 /**
@@ -344,9 +342,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
             return true;
         } else if (emailTF.getText().isBlank()) {
             return true;
-        } else if(phoneTF.getText().isBlank()) {
-            return true;
-        } else return false;
+        } else return phoneTF.getText().isBlank();
     }
     /**
      * Pulls the data from {@link AddressBook#firstNameTF}, {@link AddressBook#lastNameTF}, {@link AddressBook#cityTF},
@@ -491,7 +487,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     /**
      * Resets UI and allows user to interact with buttons
      */
-    private void viewMode() {
+    private void setViewMode() {
         addB.setText("Add");
         updateB.setText("Edit");
         deleteB.setText("Delete");
@@ -522,7 +518,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                     clearEntryTF();
                 }
                 setTextFieldsImmutable();
-                viewMode();
+                setViewMode();
                 return;
             }
             setTextFieldsImmutable();
@@ -607,6 +603,21 @@ public class AddressBook extends JFrame implements ListSelectionListener {
     }
 
     /**
+     * Checks to see if a String is only composed of numeric values, using parseInt which throws a NumberFormatException
+     * if the string can't be converted
+     * @param str The String that will be passed to parseInt
+     * @return returns false if the string is only numeric and true if not
+     */
+    private boolean isNotNumeric(String str) {
+        try {
+            Integer i = Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * sets EventHandlers for {@link AddressBook#updateB}.
      */
     public void setUpdateBEventHandlers() {
@@ -616,8 +627,16 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 if (checkForBlankTF()) {
                     AddressEntry ae = listModel.getElementAt(addressEntryJList.getSelectedIndex());
                     populateTextFields(ae);
+                    setTextFieldsImmutable();
+                    setViewMode();
                     return;
                 }
+                if (isNotNumeric(zipTF.getText())) {
+                    JOptionPane.showMessageDialog(panel1, "ZIP must be a numeric value!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    zipTF.setText("");
+                    return;
+                }
+
                 int index = addressEntryJList.getSelectedIndex();
                 AddressEntry currentlySelectedEntry = addressEntryJList.getSelectedValue();
                 AddressEntry entry = constructEntryFromFields();
@@ -625,7 +644,7 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                 listModel.setElementAt(entry, index);
                 addressEntryJList.setSelectedIndex(listModel.getIndexOf(entry));
                 setTextFieldsImmutable();
-                viewMode();
+                setViewMode();
             }
             else if(!addressEntryJList.isSelectionEmpty()) {
                 setTextFieldsMutable();
@@ -652,13 +671,18 @@ public class AddressBook extends JFrame implements ListSelectionListener {
                     JOptionPane.showMessageDialog(panel1, "Incomplete Entry!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                if (isNotNumeric(zipTF.getText())) {
+                    JOptionPane.showMessageDialog(panel1, "ZIP must be a numeric value!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    zipTF.setText("");
+                    return;
+                }
                 AddressEntry ae = constructEntryFromFields();
                 databaseManager.addAddressEntry(ae);
                 System.out.println(ae.getID());
                 add(ae);
                 listModel.add(new AddressEntry(ae.getName(), ae.getAddress(), ae.getEmail(), ae.getPhone(), ae.getID()));
                 setTextFieldsImmutable();
-                viewMode();
+                setViewMode();
                 addressEntryJList.setSelectedIndex(listModel.getIndexOf(ae));
             }
             else {
