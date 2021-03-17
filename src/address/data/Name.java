@@ -20,7 +20,7 @@ public class Name {
     private String lastName;
 
     /**
-     * constructs a new name according to the parameters passed
+     * constructs a new Name according to the parameters passed
      * @param firstName a String whose address will be set to this.firstName
      * @param lastName a String whose address will be set to this.lastName
      */

@@ -14,21 +14,24 @@ public class Address {
      * Stores the data necessary to represent a street in memory
      */
     private String street;
+
     /**
      * Stores the data necessary to represent a city in memory
      */
     private String city;
+
     /**
      * Stores the data necessary to represent a state in memory
      */
     private String state;
+
     /**
      * Stores the data necessary to represent an ID in memory
      */
     private Integer zip;
 
     /**
-     * constructs a new Address according to the parameters passed
+     * Constructs a new Address according to the parameters passed
      * @param street a String whose address will be set to this.street
      * @param city a String whose address will be set to this.city
      * @param state a String whose address will be set to this.state
