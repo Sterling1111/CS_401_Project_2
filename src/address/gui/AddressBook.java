@@ -33,125 +33,152 @@ public class AddressBook extends JFrame implements ListSelectionListener {
      * contains all other panels necessary to implement the layout
      */
     private JPanel panel1;
+
     /**
      * allows for typing in of text data which represents a last name substring to be searched for
      */
     private JTextField findTF;
+
     /**
      *  a button which when clicked on triggers the ActionEvent contained in function {@link AddressBook#setListBEventHandlers()}
      */
     private JButton listB;
+
     /**
      * a button which when clicked triggers the ActionEvent contained in function {@link AddressBook#setListBEventHandlers()}
      */
     private JButton findB;
+
     /**
      * displays address entries to the screen
      */
     private JList<AddressEntry> addressEntryJList;
+
     /**
      * a text field which displays firstName of the currently selected address entry. Can also be used to enter in
      * string data to add or modify address entries.
      */
     private JTextField firstNameTF;
+
     /**
      * a text field which displays lastName of the currently selected address entry. Can also be used to enter in
      * string data to add or modify address entries.
      */
     private JTextField lastNameTF;
+
     /**
      * a text field which displays street of the currently selected address entry. Can also be used to enter in
      * string data to add or modify address entries.
      */
     private JTextField streetTF;
+
     /**
      * a text field which displays city of the currently selected address entry. Can also be used to enter in
      * string data to add or modify address entries.
      */
     private JTextField cityTF;
+
     /**
      * a text field which displays state of the currently selected address entry. Can also be used to enter in
      * string data to add or modify address entries.
      */
     private JTextField stateTF;
+
     /**
      * a text field which displays zip of the currently selected address entry. Can also be used to enter in
      * string data to add or modify address entries.
      */
     private JTextField zipTF;
+
     /**
      * a text field which displays email address of the currently selected address entry. Can also be used to enter in
      * string data to add or modify address entries.
      */
     private JTextField emailTF;
+
     /**
      * a text field which displays phone number of the currently selected address entry. Can also be used to enter in
      * string data to add or modify address entries.
      */
     private JTextField phoneTF;
+
     /**
      * a label which reads "Find entries by last name:" is denotes the purpose of {@link AddressBook#findTF}
      */
     private JLabel findL;
+
     /**
      * a label which reads "First Name:" it labels the data displayed in {@link AddressBook#firstNameTF}
      */
     private JLabel firstNameL;
+
     /**
      * a label which reads "Last Name:" it labels the data displayed in {@link AddressBook#lastNameTF}
      */
     private JLabel lastNameL;
+
     /**
      * a label which reads "Street:" it labels the data displayed in {@link AddressBook#streetTF}
      */
     private JLabel streetL;
+
     /**
      * a label which reads "City:" it labels the data displayed in {@link AddressBook#cityTF}
      */
     private JLabel cityL;
+
     /**
      * a label which reads "State:" it labels the data displayed in {@link AddressBook#stateTF}
      */
     private JLabel stateL;
+
     /**
      * a label which reads "Zip Code:" it labels the data displayed in {@link AddressBook#zipTF}
      */
     private JLabel zipL;
+
     /**
      * a label which reads "Email:" it labels the data displayed in {@link AddressBook#emailTF}
      */
     private JLabel emailL;
+
     /**
      * a label which reads "Phone:" it labels the data displayed in {@link AddressBook#phoneTF}
      */
     private JLabel phoneL;
+
     /**
      * a button which when pressed triggers event described in {@link AddressBook#setAddBEventHandlers()}
      */
     private JButton addB;
+
     /**
      * a button which when clicked on triggers event described in {@link AddressBook#setDeleteBEventHandlers()}
      */
     private JButton deleteB;
+
     /**
      * a button which when clicked on triggers event described in {@link AddressBook#setUpdateBEventHandlers()}
      * */
     private JButton updateB;
+
     /**
      * linked to {@link AddressBook#addressEntryJList} it contains the data that the JList displays
      */
     private ListModel listModel;
+
     /**
      * stores all of the entries so that they can be quickly retrieved from memory
      */
     private final TreeMap<String, TreeSet<AddressEntry>> addressEntryList = new TreeMap<>();
+
     /**
      * allows for adding, removing, updating, and retrieving address entries from database
      */
     private final DatabaseManager databaseManager = new DatabaseManager();
 
     /**
-     *Constructs a new address book. This includes
+     * Constructs a new address book. This includes
      * setting the title of the main application window to "Address Book",
      * setting the content pane to the main panel, panel 1,
      * setting the default close operation to "EXIT_ON_CLOSE",

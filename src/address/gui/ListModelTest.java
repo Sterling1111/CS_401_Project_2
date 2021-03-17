@@ -25,18 +25,22 @@ class ListModelTest {
      * instance of {@link AddressEntry} to test.
      */
     private final AddressEntry ae1 = new AddressEntry("John", "A", "Arroyo", "Dublin", "NY", 81777, "boring@gmail.com", "925-123-7924", 1);
+
     /**
      * instance of {@link AddressEntry} to test.
      */
     private final AddressEntry ae2 = new AddressEntry("John", "B", "Arroyo", "Dublin", "NY", 81777, "boring@gmail.com", "925-123-7924", 2);
+
     /**
      * instance of {@link AddressEntry} to test.
      */
     private final AddressEntry ae3 = new AddressEntry("John", "C", "Arroyo", "Dublin", "NY", 81777, "boring@gmail.com", "925-123-7924", 3);
+
     /**
      * instance of {@link AddressEntry} to test.
      */
     private final AddressEntry ae4 = new AddressEntry("John", "D", "Arroyo", "Dublin", "NY", 81777, "boring@gmail.com", "925-123-7924", 4);
+
     /**
      * instance of {@link AddressEntry} to test.
      */

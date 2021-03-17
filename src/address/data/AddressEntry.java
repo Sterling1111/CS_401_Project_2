@@ -11,25 +11,29 @@ package address.data;
 public class AddressEntry implements Comparable<AddressEntry>{
 
     /**
-     * Stores the data necessary to represent a name in memory
+     * Stores the data necessary to represent a Name in memory
      * @see Name
      */
     private Name name;
+
     /**
-     * Stores the data necessary to represent an address in memory
+     * Stores the data necessary to represent an Address in memory
      * @see Address
      */
     private Address address;
+
     /**
      * Stores the data necessary to represent an email address in memory
      */
     private String email;
+
     /**
      * Stores the data necessary to represent a phone number in memory
      */
     private String phone;
+
     /**
-     * Stores the data necessary to represent an integer ID in memory
+     * Stores the data necessary to represent an Integer ID in memory
      */
     private Integer ID;
 
